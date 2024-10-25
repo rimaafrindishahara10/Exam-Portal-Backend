@@ -26,7 +26,7 @@ public class User {
     private String email;
     private String phone;
     private String profile;
-    private boolean isActive;
+    private boolean isActive = true;
 
     //User has many roles
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER ,mappedBy = "user")
