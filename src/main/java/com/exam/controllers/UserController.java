@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,14 +25,14 @@ public class UserController {
     public User createUser(@RequestBody User user ) throws Exception {
         Set<UserRole> userRoles = new HashSet<>();
 
-
-
         Role role = new Role();
-        role.setRole("NORMAL");
+        role.setRoleId (100L);
+        role.setRoleName ("NORMAL");
 
         UserRole userRole = new UserRole();
-        userRole.setRole(role);
         userRole.setUser(user);
+        userRole.setRole(role);
+
 
         userRoles.add(userRole);
 
@@ -54,7 +53,7 @@ public class UserController {
     }
 
     //Update-User:
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public User updateUser(@RequestBody User user,  @PathVariable Long id){
         return this.userService.updateUser(user,id);
 

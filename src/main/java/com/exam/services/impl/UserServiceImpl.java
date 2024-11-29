@@ -5,12 +5,10 @@ import com.exam.models.UserRole;
 import com.exam.repositories.RoleRepo;
 import com.exam.repositories.UserRepo;
 import com.exam.services.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -27,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User user, Set<UserRole> userRoles) throws Exception {
 
-        User localUserName = userRepo.findByUserName(user.getUserName());
+        User localUserName = userRepo.findByUserName(user.getUsername ());
 
         if(localUserName!=null){
             System.out.println("User has already here!!");
@@ -61,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User user, Long id) {
        User userUpdate = this.userRepo.findById(id).get();
-       userUpdate.setUserName(user.getUserName());
+       userUpdate.setUserName(user.getUsername ());
        userUpdate.setFirstName(user.getFirstName());
        userUpdate.setLastName(user.getLastName());
        userUpdate.setEmail(user.getEmail());
