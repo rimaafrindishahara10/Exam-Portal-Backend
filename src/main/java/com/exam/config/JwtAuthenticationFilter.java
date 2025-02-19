@@ -51,7 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         {
             System.out.println ("Invalid Token. Not Start with Bearer");
         }
-
         //Validated
         if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
             final UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(userName);

@@ -8,9 +8,8 @@ import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
-
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -21,8 +20,8 @@ public class Role {
     private Long roleId;
     private String roleName;
 
-    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY,mappedBy = "role")
-    private Set<UserRole> userRoles = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "role")
+    private Set<UserRole> userRoles = new HashSet<> ();
 
 
 }

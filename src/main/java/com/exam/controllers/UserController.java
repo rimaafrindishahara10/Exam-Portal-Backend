@@ -3,6 +3,7 @@ package com.exam.controllers;
 import com.exam.models.Role;
 import com.exam.models.User;
 import com.exam.models.UserRole;
+import com.exam.repositories.RoleRepo;
 import com.exam.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleRepo roleRepo;
+
     //Create-> User
     @PostMapping("/")
     public User createUser(@RequestBody User user ) throws Exception {
@@ -28,13 +32,14 @@ public class UserController {
         Role role = new Role();
         role.setRoleId (100L);
         role.setRoleName ("NORMAL");
+//        roleRepo.save ( role );
 
         UserRole userRole = new UserRole();
         userRole.setUser(user);
         userRole.setRole(role);
 
-
         userRoles.add(userRole);
+//        user.setUserRoles ( userRoles );
 
 
         return this.userService.createUser(user, userRoles);

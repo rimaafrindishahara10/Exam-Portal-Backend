@@ -19,13 +19,15 @@ import java.util.function.Function;
 @Service
 public class JwtUtils {
 
-    private   String SECRET = "";
+    private String secreteKey = " ";
 
     public JwtUtils() {
+
+
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance ( "HmacSHA256" );
             SecretKey secretKey = keyGen.generateKey ();
-            SECRET = Base64.getEncoder ().encodeToString ( secretKey.getEncoded () );
+            secreteKey = Base64.getEncoder ().encodeToString ( secretKey.getEncoded () );
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace ();
         }
@@ -37,19 +39,17 @@ public class JwtUtils {
         final String userName = userDetails.getUsername ();
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
-                .claims()
-                .add (claims)
                 .subject(userName)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+ 60 * 60 * 30))
-                .and()
-                .signWith(getKey())
+                .expiration(new Date(System.currentTimeMillis()+ 1000L * 60 * 60 * 30))
+                .signWith(getKey ())
                 .compact ();
     }
 
+
     private SecretKey getKey() {
-        byte[] bytes = Decoders.BASE64.decode (SECRET);
-        return  Keys.hmacShaKeyFor (bytes);
+        byte[] bytes = Decoders.BASE64.decode(secreteKey);
+        return Keys.hmacShaKeyFor(bytes);
     }
 
 
@@ -64,8 +64,8 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaim(String jwtToken) {
-        return Jwts.parser()
-                .verifyWith (getKey())
+        return Jwts.parser ()
+                .verifyWith ( getKey () )
                 .build ()
                 .parseSignedClaims ( jwtToken )
                 .getPayload ();
@@ -73,7 +73,9 @@ public class JwtUtils {
 
     public boolean validateToken(String jwtToken, UserDetails userDetails) {
         final String  userName = extractUsername(jwtToken);
+
         return  (userName.equals ( userDetails.getUsername ()) && !isTokenExpired(jwtToken));
+
     }
 
     private boolean isTokenExpired(String jwtToken) {

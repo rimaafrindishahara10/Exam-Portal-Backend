@@ -41,15 +41,15 @@ public class User implements UserDetails {
 
         Set<Authority> set = new HashSet<>();
         this.userRoles.forEach(userRole -> {
-            set.add(new Authority(userRole.getRole().getRoleName()));
+            set.add(new Authority(userRole.getRole ().getRoleName ()));
         });
 
-        return null;
+        return set;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return userName;
     }
 
     @Override
