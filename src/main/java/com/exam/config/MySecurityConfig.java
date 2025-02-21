@@ -10,8 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -26,41 +25,42 @@ public class MySecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance ();
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder ();
     }
-
-
-
 
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject ( AuthenticationManagerBuilder.class );
 
-        authenticationManagerBuilder.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService ( userDetailsServiceImpl ).passwordEncoder ( passwordEncoder () );
 
-        return authenticationManagerBuilder.build();
+        return authenticationManagerBuilder.build ();
     }
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf(csrf -> csrf.disable())
-                    .cors(cors-> cors.disable())
-                    .authorizeHttpRequests(auth ->
-                            auth.requestMatchers("/generate-token" , "/users/").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .anyRequest().authenticated()
+        httpSecurity
+                .csrf ( csrf -> csrf.disable () )
 
-                    )
-                   .exceptionHandling(exceptionHandling ->  exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
-                   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                   .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests ( auth ->
+                        auth.requestMatchers ( "/generate-token", "/user/" ).permitAll ()
+                                .requestMatchers ( HttpMethod.OPTIONS ).permitAll ()
+                                .anyRequest ().authenticated ()
 
-        return httpSecurity.build();
+                )
+
+                .exceptionHandling ( exceptionHandling -> exceptionHandling.authenticationEntryPoint ( unauthorizedHandler ) )
+                .sessionManagement ( session -> session.sessionCreationPolicy ( SessionCreationPolicy.STATELESS ) )
+                .addFilterBefore ( jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class );
+
+        return httpSecurity.build ();
     }
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.exam.services.impl;
 
+import com.exam.helper.UserFoundException;
 import com.exam.models.User;
 import com.exam.models.UserRole;
 import com.exam.repositories.RoleRepo;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepo roleRepo;
 
 
+
     //User-Create -Method
 
     @Override
@@ -29,11 +31,11 @@ public class UserServiceImpl implements UserService {
 
         if(localUserName!=null){
             System.out.println("User has already here!!");
-            throw new Exception("User has already present!!");
+            throw new UserFoundException ();
         }
         else {
             for (UserRole ur: userRoles){
-                roleRepo.save(ur.getRole());
+                roleRepo.save(ur.getRole ());
             }
             user.getUserRoles().addAll(userRoles);
             localUserName = this.userRepo.save(user);

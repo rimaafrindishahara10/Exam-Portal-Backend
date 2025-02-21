@@ -8,6 +8,7 @@ import com.exam.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -24,6 +25,9 @@ public class UserController {
     @Autowired
     private RoleRepo roleRepo;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     //Create-> User
     @PostMapping("/")
     public User createUser(@RequestBody User user ) throws Exception {
@@ -37,9 +41,11 @@ public class UserController {
         UserRole userRole = new UserRole();
         userRole.setUser(user);
         userRole.setRole(role);
+        user.setPassword ( this.bCryptPasswordEncoder.encode ( user.getPassword () ) );
+
 
         userRoles.add(userRole);
-//        user.setUserRoles ( userRoles );
+        user.setUserRoles ( userRoles );
 
 
         return this.userService.createUser(user, userRoles);
