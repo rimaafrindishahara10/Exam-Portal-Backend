@@ -15,12 +15,15 @@ public class QuizServiceImpl implements QuizService {
 
     public QuizServiceImpl(QuizRepo quizRepo) {
         this.quizRepo = quizRepo;
+
     }
+
+
 
 
     @Override
     public Quiz addQuiz(Quiz quiz) {
-        return this.quizRepo.save ( quiz );
+        return this.quizRepo.save(quiz);
     }
 
     @Override
@@ -40,6 +43,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void deleteQuiz(Long quizId) {
-        this.quizRepo.deleteById ( quizId );
+        Quiz quiz = this.quizRepo.findById ( quizId ).get ();
+        this.quizRepo.delete ( quiz );
     }
 }

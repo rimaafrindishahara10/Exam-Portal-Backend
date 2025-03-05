@@ -18,7 +18,7 @@ import java.util.Set;
 public class Quiz {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long qId;
     private String title;
     private String description;
@@ -27,7 +27,7 @@ public class Quiz {
     private boolean active=false;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Category categories ;
+    private Category category ;
     @OneToMany(mappedBy = "quiz",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Question> questions = new HashSet<> ();

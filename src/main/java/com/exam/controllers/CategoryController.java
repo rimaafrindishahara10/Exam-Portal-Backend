@@ -5,6 +5,8 @@ import com.exam.services.impl.CategoryServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -46,9 +48,13 @@ public class CategoryController {
     }
     //Delete-Category
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId){
-        this.categoryService.deleteCategory ( categoryId );
-        return ResponseEntity.ok ("!!! Category deleted successfully !!!");
+    public ResponseEntity<Map<String, String>> deleteCategory(@PathVariable Long categoryId) {
+        this.categoryService.deleteCategory(categoryId);
+        //Return a JSON response to angular
+        Map<String, String> response = new HashMap<> ();
+        response.put("message", "Category has been deleted successfully!");
+
+        return ResponseEntity.ok(response);
     }
 
 

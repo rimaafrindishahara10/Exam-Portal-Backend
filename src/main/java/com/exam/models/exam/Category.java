@@ -10,20 +10,22 @@ import lombok.Setter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long cId;
     private String title;
     private String description;
 
-    @OneToMany(mappedBy = "categories",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category",fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Quiz> quizzes = new LinkedHashSet<> ();
+
+
 }
