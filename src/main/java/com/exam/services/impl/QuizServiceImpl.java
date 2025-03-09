@@ -13,8 +13,10 @@ public class QuizServiceImpl implements QuizService {
 
     private final QuizRepo quizRepo;
 
+
     public QuizServiceImpl(QuizRepo quizRepo) {
         this.quizRepo = quizRepo;
+
 
     }
 
@@ -23,6 +25,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public Quiz addQuiz(Quiz quiz) {
+
         return this.quizRepo.save(quiz);
     }
 

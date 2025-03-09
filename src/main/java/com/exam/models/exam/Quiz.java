@@ -26,7 +26,7 @@ public class Quiz {
     private String numOfQuestions;
     private boolean active=false;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     private Category category ;
     @OneToMany(mappedBy = "quiz",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
