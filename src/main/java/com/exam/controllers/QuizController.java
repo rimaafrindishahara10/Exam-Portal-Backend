@@ -5,6 +5,8 @@ import com.exam.services.QuizService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/quiz")
 @CrossOrigin("*")
@@ -43,9 +45,9 @@ public class QuizController {
 
     //Method->Delete-Quiz
     @DeleteMapping("/{quizId}")
-    public ResponseEntity<String> deleteQuiz(@PathVariable Long quizId){
+    public ResponseEntity<?> deleteQuiz(@PathVariable Long quizId){
         this.quizService.deleteQuiz ( quizId );
-        return ResponseEntity.ok ("!!!This user has been deleted from database!!!");
+        return ResponseEntity.ok ( Map.of("message", "Quiz deleted successfully"));
     }
 
 
